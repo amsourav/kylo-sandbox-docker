@@ -3,10 +3,10 @@
 FROM centos
 
 ENV BRANCH=master
-ENV MAVEN_PROJECTS_LIST="!:kylo-catalog-filesystem-azure,!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
+# ENV MAVEN_PROJECTS_LIST="!:kylo-catalog-filesystem-azure,!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
 
 #ENV BRANCH=v0.9.1.1
-#ENV MAVEN_PROJECTS_LIST="!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
+ENV MAVEN_PROJECTS_LIST="!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
 
 # Install required packages
 RUN yum install -yy wget git which java-1.8.0-openjdk-devel bzip2 rpm-build
