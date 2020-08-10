@@ -12,16 +12,16 @@ ENV MAVEN_PROJECTS_LIST="!:kylo-catalog-filesystem-azure,!:kylo-install-rpm,!:ky
 RUN yum install -yy wget git which java-1.8.0-openjdk-devel bzip2 rpm-build
 
 # Install NodeJS and Yarn
-RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash - && yum install nodejs -yy
-RUN curl -sL https://dl.yarnpkg.com/rpm/yarn.repo -o /etc/yum.repos.d/yarn.repo && yum install yarn -yy
+RUN curl -sLk https://rpm.nodesource.com/setup_8.x | bash - && yum install nodejs -yy
+RUN curl -sLk https://dl.yarnpkg.com/rpm/yarn.repo -o /etc/yum.repos.d/yarn.repo && yum install yarn -yy
 
 # Install wkhtmltopdf (https://gist.github.com/paulsturgess/cfe1a59c7c03f1504c879d45787699f5)
 RUN yum install -yy libpng libjpeg openssl icu libX11 libXext libXrender xorg-x11-fonts-Type1 xorg-x11-fonts-75dpi
-RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
+RUN wget --no-check-certificate https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
 RUN rpm -Uvh wkhtmltox-0.12.5-1.centos7.x86_64.rpm
 
 # Install Maven
-RUN mkdir -p /usr/local/src && cd /usr/local/src && wget http://apache.crihan.fr/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+RUN mkdir -p /usr/local/src && cd /usr/local/src && wget --no-check-certificate http://apache.crihan.fr/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
 RUN cd /usr/local/src && tar -xf apache-maven-3.5.4-bin.tar.gz && rm -f apache-maven-3.5.4-bin.tar.gz && mv apache-maven-3.5.4/ apache-maven/
 
 # Checkout kylo
@@ -61,7 +61,7 @@ RUN cp /opt/kylo/setup/plugins/kylo-service-monitor-kylo-cluster-*.jar /opt/kylo
 
 # Install spark
 RUN mkdir -p /opt/spark
-RUN wget http://apache.crihan.fr/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
+RUN wget --no-check-certificate http://apache.crihan.fr/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
 RUN tar zxvf spark-2.3.1-bin-hadoop2.7.tgz -C /opt/spark && rm -f spark-2.3.1-bin-hadoop2.7.tgz
 RUN ln -s /opt/spark/spark-2.3.1-bin-hadoop2.7 /opt/spark/current
 
