@@ -12,7 +12,7 @@ ENV MAVEN_PROJECTS_LIST="!:kylo-catalog-filesystem-azure,!:kylo-install-rpm,!:ky
 RUN yum install -yy wget git which java-1.8.0-openjdk-devel bzip2 rpm-build
 
 # Install NodeJS and Yarn
-RUN curl -sLk https://rpm.nodesource.com/setup_8.x | bash - && yum install nodejs -yy
+RUN curl -sLk https://rpm.nodesource.com/setup_10.x | bash - && yum install nodejs -yy
 RUN curl -sLk https://dl.yarnpkg.com/rpm/yarn.repo -o /etc/yum.repos.d/yarn.repo && yum install yarn -yy
 
 # Install wkhtmltopdf (https://gist.github.com/paulsturgess/cfe1a59c7c03f1504c879d45787699f5)
