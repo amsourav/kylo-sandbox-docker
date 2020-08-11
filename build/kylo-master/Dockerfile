@@ -61,7 +61,7 @@ RUN cp /opt/kylo/setup/plugins/kylo-service-monitor-kylo-cluster-*.jar /opt/kylo
 
 # Install spark
 RUN mkdir -p /opt/spark
-RUN wget --no-check-certificate http://apache.crihan.fr/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
+RUN wget --no-check-certificate https://archive.apache.org/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz
 RUN tar zxvf spark-2.3.1-bin-hadoop2.7.tgz -C /opt/spark && rm -f spark-2.3.1-bin-hadoop2.7.tgz
 RUN ln -s /opt/spark/spark-2.3.1-bin-hadoop2.7 /opt/spark/current
 
