@@ -9,6 +9,10 @@ services:
       - frontoffice
       - backoffice
       - reverse-proxy
+    depends_on:
+      - db
+      - es
+      - nifi
     volumes:
       - ./volumes/services/application.properties:/opt/kylo/kylo-services/conf/application.properties
       - ./volumes/services/elasticsearch-rest.properties:/opt/kylo/kylo-services/conf/elasticsearch-rest.properties
@@ -35,7 +39,9 @@ services:
       - ./volumes/services/groups.properties:/opt/kylo/groups.properties
     environment:
       VIRTUAL_HOST: kylo.amsourav.xyz
-      VIRTUAL_PORT: 8400      
+      VIRTUAL_PORT: 8400
+    ports:
+      - 8400:8400
 
   nifi:
     image: amsourav/kylo-tar
