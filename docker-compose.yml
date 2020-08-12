@@ -78,16 +78,16 @@ services:
     networks:
       - backoffice
       
-  init-es:
-    image: amsourav/kylo-tar
-    depends_on:
-      - es
-    deploy:
-      restart_policy:
-        condition: none
-    command: "/opt/wait-for-it/wait-for-it.sh -h es -p 9200 --strict --timeout=0 -- /opt/kylo/bin/create-kylo-indexes-es.sh es 9200 1 1"
-    networks:
-      - backoffice
+  # init-es:
+  #   image: amsourav/kylo-tar
+  #   depends_on:
+  #     - es
+  #   deploy:
+  #     restart_policy:
+  #       condition: none
+  #   command: "/opt/wait-for-it/wait-for-it.sh -h es -p 9200 --strict --timeout=0 -- /opt/kylo/bin/create-kylo-indexes-es.sh es 9200 1 1"
+  #   networks:
+  #     - backoffice
       
   #init-templates:
   #  image: amsourav/kylo-tar
