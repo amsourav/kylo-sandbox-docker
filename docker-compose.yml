@@ -34,7 +34,7 @@ services:
       - ./volumes/services/users.properties:/opt/kylo/users.properties
       - ./volumes/services/groups.properties:/opt/kylo/groups.properties
     environment:
-      VIRTUAL_HOST: ui.sandbox.kylo.io
+      VIRTUAL_HOST: kylo.amsourav.xyz
       VIRTUAL_PORT: 8400      
 
   nifi:
