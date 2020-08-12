@@ -3,8 +3,7 @@ version: '3'
 services:
 
   services:
-    image: 127.0.0.1:5000/kylo-master
-    build: ./build/kylo-master
+    image: amsourav/kylo-tar
     entrypoint: /entrypoint-kylo-services.sh
     networks:
       - frontoffice
@@ -24,7 +23,7 @@ services:
       - ./volumes/services/core-site.xml:/etc/hadoop/conf/core-site.xml
 
   ui:
-    image: 127.0.0.1:5000/kylo-master
+    image: amsourav/kylo-tar
     entrypoint: /entrypoint-kylo-ui.sh
     networks:
       - frontoffice
@@ -39,7 +38,7 @@ services:
       VIRTUAL_PORT: 8400      
 
   nifi:
-    image: 127.0.0.1:5000/kylo-master
+    image: amsourav/kylo-tar
     entrypoint: /entrypoint-kylo-nifi.sh
     volumes:
       - ./volumes/nifi/config.properties:/opt/nifi/ext-config/config.properties
@@ -74,7 +73,7 @@ services:
       - backoffice
       
   init-es:
-    image: 127.0.0.1:5000/kylo-master
+    image: amsourav/kylo-tar
     depends_on:
       - es
     deploy:
@@ -85,7 +84,7 @@ services:
       - backoffice
       
   #init-templates:
-  #  image: 127.0.0.1:5000/kylo-master
+  #  image: amsourav/kylo-tar
   #  depends_on:
   #    - ui
   #  deploy:
@@ -120,12 +119,12 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-  registry:
-    image: registry
-    networks:
-      - default
-    ports:
-      - 5000:5000
+  # registry:
+  #   image: registry
+  #   networks:
+  #     - default
+  #   ports:
+  #     - 5000:5000
 
 networks:
   frontoffice:
