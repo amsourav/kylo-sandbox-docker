@@ -3,13 +3,19 @@ version: '3'
 services:
 
   services:
-    image: 127.0.0.1:5000/kylo-master
-    build: ./build/kylo-master
+    image: 127.0.0.1:5000/kylobuilder
+    build: ./kylobuilder
     entrypoint: /entrypoint-kylo-services.sh
     networks:
       - frontoffice
       - backoffice
       - reverse-proxy
+    ports: 
+      - 8420:8420
+    depends_on:
+      - db
+      - es
+      - nifi
     volumes:
       - ./volumes/services/application.properties:/opt/kylo/kylo-services/conf/application.properties
       - ./volumes/services/elasticsearch-rest.properties:/opt/kylo/kylo-services/conf/elasticsearch-rest.properties
@@ -24,7 +30,7 @@ services:
       - ./volumes/services/core-site.xml:/etc/hadoop/conf/core-site.xml
 
   ui:
-    image: 127.0.0.1:5000/kylo-master
+    image: 127.0.0.1:5000/kylobuilder
     entrypoint: /entrypoint-kylo-ui.sh
     networks:
       - frontoffice
@@ -34,12 +40,14 @@ services:
       - ./volumes/ui/application.properties:/opt/kylo/kylo-ui/conf/application.properties
       - ./volumes/services/users.properties:/opt/kylo/users.properties
       - ./volumes/services/groups.properties:/opt/kylo/groups.properties
-    environment:
-      VIRTUAL_HOST: ui.sandbox.kylo.io
-      VIRTUAL_PORT: 8400      
+    # environment:
+    #   VIRTUAL_HOST: kylo.amsourav.xyz
+    #   VIRTUAL_PORT: 8400
+    ports:
+      - 8400:8400
 
   nifi:
-    image: 127.0.0.1:5000/kylo-master
+    image: 127.0.0.1:5000/kylobuilder
     entrypoint: /entrypoint-kylo-nifi.sh
     volumes:
       - ./volumes/nifi/config.properties:/opt/nifi/ext-config/config.properties
@@ -49,9 +57,9 @@ services:
       - frontoffice
       - backoffice
       - reverse-proxy
-    environment:
-      VIRTUAL_HOST: nifi.sandbox.kylo.io
-      VIRTUAL_PORT: 8079
+    # environment:
+    #   VIRTUAL_HOST: nifi.sandbox.kylo.io
+    #   VIRTUAL_PORT: 8079
       
   db:
     image: mariadb
@@ -73,19 +81,19 @@ services:
     networks:
       - backoffice
       
-  init-es:
-    image: 127.0.0.1:5000/kylo-master
-    depends_on:
-      - es
-    deploy:
-      restart_policy:
-        condition: none
-    command: "/opt/wait-for-it/wait-for-it.sh -h es -p 9200 --strict --timeout=0 -- /opt/kylo/bin/create-kylo-indexes-es.sh es 9200 1 1"
-    networks:
-      - backoffice
+  # init-es:
+  #   image: 127.0.0.1:5000/kylobuilder
+  #   depends_on:
+  #     - es
+  #   deploy:
+  #     restart_policy:
+  #       condition: none
+  #   command: "/opt/wait-for-it/wait-for-it.sh -h es -p 9200 --strict --timeout=0 -- /opt/kylo/bin/create-kylo-indexes-es.sh es 9200 1 1"
+  #   networks:
+  #     - backoffice
       
-  #init-templates:
-  #  image: 127.0.0.1:5000/kylo-master
+  # init-templates:
+  #  image: 127.0.0.1:5000/kylobuilder
   #  depends_on:
   #    - ui
   #  deploy:
@@ -104,21 +112,21 @@ services:
       - reverse-proxy
     hostname: sandbox-hdp.hortonworks.com
     privileged: true
-    environment:
-      VIRTUAL_HOST: ambari.sandbox.kylo.io
-      VIRTUAL_PORT: 8080
+    # environment:
+    #   VIRTUAL_HOST: ambari.sandbox.kylo.io
+    #   VIRTUAL_PORT: 8080
     # Extra steps:
-    # - docker exec -it kylo_hdp-sandbox_1 ambari-admin-password-reset
+    # - docker exec -it kylo-sandbox-docker_hdp-sandbox_1 ambari-admin-password-reset
   
-  reverse-proxy:
-    image: jwilder/nginx-proxy:alpine
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - reverse-proxy
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+  # reverse-proxy:
+  #   image: jwilder/nginx-proxy:alpine
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   networks:
+  #     - reverse-proxy
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
 
   registry:
     image: registry

@@ -6,7 +6,7 @@ ENV BRANCH=master
 # ENV MAVEN_PROJECTS_LIST="!:kylo-catalog-filesystem-azure,!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
 
 #ENV BRANCH=v0.9.1.1
-ENV MAVEN_PROJECTS_LIST="!:kylo-docs,!:kylo-samples,!:kylo-samples-plugins,!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
+ENV MAVEN_PROJECTS_LIST="!:kylo-install-tar,!:kylo-docs,!:kylo-samples,!:kylo-samples-plugins,!:kylo-install-rpm,!:kylo-install-debian,!:example-auth-custom,!:example-ui-get-file-processor-template,!:example-ui-feed-stepper-plugin,!:example-module-services,!:example-module-ui,!:kylo-provenance-samples,!:kylo-spark-provenance-app,!:kylo-release"
 
 # Install required packages
 RUN yum install -yy wget git which java-1.8.0-openjdk-devel bzip2 rpm-build
@@ -36,14 +36,14 @@ RUN cd /usr/local/src/kylo/ && /usr/local/src/apache-maven/bin/mvn package -B -p
 RUN yum install -yy curl sudo unzip mariadb
 
 # Copy kylo TAR
-RUN mkdir -p /opt/kylo && mv /usr/local/src/kylo/install/install-tar/target/kylo-*-dependencies.tar.gz /opt/kylo/
+RUN mkdir -p /opt/kylo && mv /usr/local/src/kylo/install/install-tar/target/kylo-*-dependencies.tar.gz /opt/kylo/ && cd /opt/kylo/ && tar zxvf kylo-*-dependencies.tar.gz && rm -f kylo-*-dependencies.tar.gz
 
 # Cleanup
 RUN rm -rf /toot/.m2 /usr/local/src/apache-maven /usr/local/src/apache-maven /usr/local/src/kylo
 
 # Install Kylo
 RUN useradd -r -G users kylo
-RUN cd /opt/kylo/ && tar zxvf kylo-*-dependencies.tar.gz && rm -f kylo-*-dependencies.tar.gz
+
 RUN /opt/kylo/setup/install/post-install.sh
 
 # Create additional shells required for Docker
